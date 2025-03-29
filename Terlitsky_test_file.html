@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Минимальный ограничивающий прямоугольник</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: inline-block;
+            width: 150px;
+        }
+        input {
+            width: 60px;
+            padding: 5px;
+        }
+        button {
+            padding: 8px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h2>Найти минимальный ограничивающий прямоугольник</h2>
+    
+    <div class="input-group">
+        <h3>Прямоугольник 1</h3>
+        <label for="rect1-x">X левого нижнего угла:</label>
+        <input type="number" id="rect1-x" value="0"><br>
+        <label for="rect1-y">Y левого нижнего угла:</label>
+        <input type="number" id="rect1-y" value="0"><br>
+        <label for="rect1-width">Ширина:</label>
+        <input type="number" id="rect1-width" value="10"><br>
+        <label for="rect1-height">Высота:</label>
+        <input type="number" id="rect1-height" value="5">
+    </div>
+    
+    <div class="input-group">
+        <h3>Прямоугольник 2</h3>
+        <label for="rect2-x">X левого нижнего угла:</label>
+        <input type="number" id="rect2-x" value="3"><br>
+        <label for="rect2-y">Y левого нижнего угла:</label>
+        <input type="number" id="rect2-y" value="2"><br>
+        <label for="rect2-width">Ширина:</label>
+        <input type="number" id="rect2-width" value="8"><br>
+        <label for="rect2-height">Высота:</label>
+        <input type="number" id="rect2-height" value="6">
+    </div>
+    
+    <button onclick="calculateBoundingRect()">Вычислить</button>
+    
+    <div id="result"></div>
+    
+    <script>
+        function calculateBoundingRect() {
+            // Получаем данные первого прямоугольника
+            const rect1 = {
+                x: parseFloat(document.getElementById('rect1-x').value),
+                y: parseFloat(document.getElementById('rect1-y').value),
+                width: parseFloat(document.getElementById('rect1-width').value),
+                height: parseFloat(document.getElementById('rect1-height').value)
+            };
+            
+            // Получаем данные второго прямоугольника
+            const rect2 = {
+                x: parseFloat(document.getElementById('rect2-x').value),
+                y: parseFloat(document.getElementById('rect2-y').value),
+                width: parseFloat(document.getElementById('rect2-width').value),
+                height: parseFloat(document.getElementById('rect2-height').value)
+            };
+            
+            // Вычисляем координаты правого верхнего угла для каждого прямоугольника
+            rect1.x2 = rect1.x + rect1.width;
+            rect1.y2 = rect1.y + rect1.height;
+            
+            rect2.x2 = rect2.x + rect2.width;
+            rect2.y2 = rect2.y + rect2.height;
+            
+            // Находим минимальный ограничивающий прямоугольник
+            const boundingRect = {
+                x: Math.min(rect1.x, rect2.x),
+                y: Math.min(rect1.y, rect2.y),
+                x2: Math.max(rect1.x2, rect2.x2),
+                y2: Math.max(rect1.y2, rect2.y2)
+            };
+            
+            // Вычисляем ширину и высоту ограничивающего прямоугольника
+            boundingRect.width = boundingRect.x2 - boundingRect.x;
+            boundingRect.height = boundingRect.y2 - boundingRect.y;
+            
+            // Выводим результат
+            const resultElement = document.getElementById('result');
+            resultElement.innerHTML = `
+                <h3>Результат:</h3>
+                <p><strong>Левый нижний угол:</strong> (${boundingRect.x}, ${boundingRect.y})</p>
+                <p><strong>Правый верхний угол:</strong> (${boundingRect.x2}, ${boundingRect.y2})</p>
+                <p><strong>Ширина:</strong> ${boundingRect.width}</p>
+                <p><strong>Высота:</strong> ${boundingRect.height}</p>
+            `;
+        }
+    </script>
+</body>
+</html>
